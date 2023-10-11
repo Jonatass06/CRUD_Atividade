@@ -15,6 +15,11 @@ public class PersonagemDAO extends DAO<Personagem, Integer> {
     }
 
     @Override
+    public Integer pegarId(Personagem obj) {
+        return obj.getId();
+    }
+
+    @Override
     public Personagem converter(ResultSet resultSet) throws SQLException {
         return new Personagem(resultSet);
     }

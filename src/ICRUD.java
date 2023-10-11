@@ -9,5 +9,6 @@ public interface ICRUD<T, ID> extends AutoCloseable {
     void deletar(ID id) throws SQLException;
 
     Set<T> buscarTodos() throws SQLException;
+    T buscarUm(ID id) throws SQLException;
 
 }

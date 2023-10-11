@@ -14,9 +14,16 @@ public class ItemDAO extends DAO<Item, Integer>{
     }
 
     @Override
+    public Integer pegarId(Item obj) {
+        return obj.getId();
+    }
+
+    @Override
     public Item converter(ResultSet resultSet) throws SQLException {
         return new Item(resultSet);
     }
+
+
 
     @Override
     public void setValues(PreparedStatement statement, Item obj) throws SQLException {
