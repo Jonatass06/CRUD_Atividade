@@ -41,4 +41,13 @@ public class Personagem {
     public Item getItem() {
         return item;
     }
+
+    @Override
+    public String toString() {
+        return "Personagem{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", idade=" + idade +
+                '}';
+    }
 }

@@ -34,4 +34,13 @@ public class Item {
     public String getRaridade() {
         return raridade;
     }
+
+    @Override
+    public String toString() {
+        return "Item{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", raridade='" + raridade + '\'' +
+                '}';
+    }
 }

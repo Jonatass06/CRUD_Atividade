@@ -9,8 +9,13 @@ public class ItemDAO extends DAO<Item, Integer>{
     }
 
     @Override
-    public void defineComando() {
-        super.setComando("INSERT INTO item VALUES (?,?,?)");
+    public void defineInserir() {
+        super.setComando("INSERT INTO personagem VALUES (?,?,?)");
+    }
+
+    @Override
+    public void defineAtualizar() {
+        super.setComando("UPDATE personagem SET nome = ?, raridade = ? WHERE id = ?");
     }
 
     @Override
@@ -23,12 +28,16 @@ public class ItemDAO extends DAO<Item, Integer>{
         return new Item(resultSet);
     }
 
-
-
     @Override
-    public void setValues(PreparedStatement statement, Item obj) throws SQLException {
-        statement.setInt(1, obj.getId());
-        statement.setString(2, obj.getNome());
-        statement.setString(3, obj.getRaridade());
+    public void setValues(PreparedStatement statement, Item obj, boolean atualizando) throws SQLException {
+        if(atualizando){
+            statement.setInt(3, obj.getId());
+            statement.setString(1, obj.getNome());
+            statement.setString(2, obj.getRaridade());
+        }else{
+            statement.setInt(1, obj.getId());
+            statement.setString(2, obj.getNome());
+            statement.setString(3, obj.getRaridade());
+        }
     }
 }

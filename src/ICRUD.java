@@ -10,5 +10,7 @@ public interface ICRUD<T, ID> extends AutoCloseable {
 
     Set<T> buscarTodos() throws SQLException;
     T buscarUm(ID id) throws SQLException;
+    void atualizar(T obj, ID id) throws SQLException;
+
 
 }

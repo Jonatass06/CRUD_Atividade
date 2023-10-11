@@ -27,9 +27,9 @@ public abstract class DAO<T, ID> implements ICRUD<T, ID>{
             buscarUm(pegarId(obj));
             throw new KeyAlreadyExistsException();
         }catch(NoSuchElementException e){
-            defineComando();
+            defineInserir();
             PreparedStatement statement = this.connection.prepareStatement(this.comando);
-            setValues(statement, obj);
+            setValues(statement, obj, false );
             statement.execute();
         }
     }
@@ -40,6 +40,28 @@ public abstract class DAO<T, ID> implements ICRUD<T, ID>{
         PreparedStatement statement = this.connection.prepareStatement(this.comando);
         statement.setInt(1, (Integer)id);
         statement.execute();
+    }
+
+    @Override
+    public void atualizar(T obj, ID id) throws SQLException{
+        buscarUm(pegarId(obj));
+        defineAtualizar();
+        PreparedStatement statement = this.connection.prepareStatement(this.comando);
+        setValues(statement, obj, true);
+        statement.execute();
+    }
+
+
+    @Override
+    public T buscarUm(ID id) throws SQLException{
+        this.comando = "SELECT * FROM " + this.tabela + " WHERE id = ?";
+        PreparedStatement statement = this.connection.prepareStatement(this.comando);
+        statement.setInt(1, (Integer)id);
+        ResultSet resultSet = statement.executeQuery();
+        if(resultSet.next()){
+            return converter(resultSet);
+        }
+        throw new NoSuchElementException();
     }
 
     @Override
@@ -54,24 +76,13 @@ public abstract class DAO<T, ID> implements ICRUD<T, ID>{
         return set;
     }
 
-    @Override
-    public T buscarUm(ID id) throws SQLException{
-        this.comando = "SELECT * FROM " + this.tabela + " WHERE id = ?";
-        PreparedStatement statement = this.connection.prepareStatement(this.comando);
-        statement.setInt(1, (Integer)id);
-        ResultSet resultSet = statement.executeQuery();
-        if(resultSet.next()){
-            return converter(resultSet);
-        }
-        throw new NoSuchElementException();
-    }
-
     public void setComando(String comando) {
         this.comando = comando;
     }
 
-    public abstract void defineComando();
+    public abstract void defineInserir();
+    public abstract void defineAtualizar();
     public abstract ID pegarId(T obj);
     public abstract T converter(ResultSet resultSet) throws SQLException;
-    public abstract void setValues(PreparedStatement statement, T obj) throws SQLException;
+    public abstract void setValues(PreparedStatement statement, T obj, boolean atualizando) throws SQLException;
 }
